@@ -7,6 +7,6 @@ window.COIN_DASH = {
   droneSpeed: 105,
   droneCount: 3,
   // Shield power-up: appears every minDelay..maxDelay seconds, stays lifetime seconds, absorbs one hit.
-  shield: { minDelay: 7, maxDelay: 12, lifetime: 6, graceMs: 1200, color: 0x7aa2ff },
+  shield: { minDelay: 4, maxDelay: 6, lifetime: 6, graceMs: 1200, color: 0x7aa2ff },
   colors: { background: 0x101c31, player: 0x71e8ce, coin: 0xffd166, drone: 0xff657a }
 };

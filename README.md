@@ -13,7 +13,7 @@ press P to pause or resume; press R to restart. This is deliberately small so yo
 
 ## Shield power-up
 
-Every 7 to 12 seconds a blue star appears for 6 seconds. Touch it to get a shield (a blue ring
+Every 4 to 6 seconds a blue star appears for 6 seconds. Touch it to get a shield (a blue ring
 around you) that absorbs one drone hit; after the hit you blink and are safe for a moment so you
 can escape. Timings are in `settings.js` under `shield`.
 
