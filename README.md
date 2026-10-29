@@ -11,6 +11,12 @@ press P to pause or resume; press R to restart. This is deliberately small so yo
 - P: pause or resume. The game shows a PAUSED overlay, and the round timer stops while paused.
 - R: restart the round (also works while paused).
 
+## Shield power-up
+
+Every 7 to 12 seconds a blue star appears for 6 seconds. Touch it to get a shield (a blue ring
+around you) that absorbs one drone hit; after the hit you blink and are safe for a moment so you
+can escape. Timings are in `settings.js` under `shield`.
+
 ## Run it locally
 
 Clone the repository and open `index.html` in a browser. Everything is in the repository;
