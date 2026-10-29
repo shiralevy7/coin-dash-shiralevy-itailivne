@@ -11,6 +11,14 @@ press P to pause or resume; press R to restart. This is deliberately small so yo
 - P: pause or resume. The game shows a PAUSED overlay, and the round timer stops while paused.
 - R: restart the round (also works while paused).
 
+## High score
+
+Your best score is shown in the top bar ("Best") and on the end-of-round panel. It is saved in the
+browser's `localStorage` (key `coinDash.highScore`) as soon as you beat it, so it survives restarts and
+page reloads. It is stored per browser, so a different browser or device starts from 0. If the browser
+blocks storage (for example in private browsing), the game still runs but the best score is not kept.
+To reset it, run `localStorage.removeItem('coinDash.highScore')` in the browser console.
+
 ## Shield power-up
 
 Every 4 to 6 seconds a blue star appears for 6 seconds. Touch it to get a shield (a blue ring
