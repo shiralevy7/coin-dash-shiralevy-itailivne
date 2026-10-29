@@ -25,6 +25,13 @@ Every 4 to 6 seconds a blue star appears for 6 seconds. Touch it to get a shield
 around you) that absorbs one drone hit; after the hit you blink and are safe for a moment so you
 can escape. Timings are in `settings.js` under `shield`.
 
+## More drones over time
+
+The round starts with 3 drones, and one more joins every 8 seconds until there are 8. A new drone
+always appears well away from you, so it never catches you the moment it spawns. No drones are added
+while the game is paused or after the round ends, and R starts again with 3. Tuning is in `settings.js`
+(`droneCount`, `droneEvery`, `droneMax`, `droneSpawnDistance`).
+
 ## Run it locally
 
 Clone the repository and open `index.html` in a browser. Everything is in the repository;
