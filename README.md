@@ -3,7 +3,8 @@
 Collect coins, avoid drones, and survive a 45-second round. Move with arrow keys or WASD;
 press P to pause or resume; press R to restart. This is deliberately small so you can add features during the lab.
 
-**Play it here:** https://www.avivz.net/coin-dash/
+**Play our version:** https://shiralevy7.github.io/coin-dash-shiralevy-itailivne/ (served by GitHub Pages
+from `main`). The original starter game without our features is at https://www.avivz.net/coin-dash/.
 
 ## Controls
 
@@ -19,17 +20,18 @@ page reloads. It is stored per browser, so a different browser or device starts 
 blocks storage (for example in private browsing), the game still runs but the best score is not kept.
 To reset it, run `localStorage.removeItem('coinDash.highScore')` in the browser console.
 
-## Shield power-up
+## Power-ups
 
-Every 4 to 6 seconds a blue star appears for 6 seconds. Touch it to get a shield (a blue ring
-around you) that absorbs one drone hit; after the hit you blink and are safe for a moment so you
-can escape. Timings are in `settings.js` under `shield`.
+Two pickups appear on the board, each every 4 to 6 seconds, and stay for 6 seconds if you do not
+grab them. Once picked up, a power-up lasts 5 seconds and blinks during its last second.
 
-## Sword
+- **Shield** (blue star): a blue ring around you absorbs one drone hit. After the hit you blink and
+  are safe for a moment so you can escape.
+- **Sword** (silver blade): a sword spins slowly around you (one turn every 3 seconds). Any drone it
+  touches is destroyed and gives you 1 point; 2 seconds later the drone comes back from a random spot
+  on the edge of the board.
 
-A sword spins slowly around you (one turn every 3 seconds). Any drone it touches is destroyed and
-gives you 1 point; 2 seconds later the drone comes back from a random spot on the edge of the board.
-Settings are in `settings.js` under `sword`.
+Drones move at 150 px/s. Timings are in `settings.js` under `shield` and `sword`.
 
 ## Run it locally
 
