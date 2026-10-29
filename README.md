@@ -5,6 +5,12 @@ press P to pause or resume; press R to restart. This is deliberately small so yo
 
 **Play it here:** https://www.avivz.net/coin-dash/
 
+## Controls
+
+- Arrow keys or WASD: move.
+- P: pause or resume. The game shows a PAUSED overlay, and the round timer stops while paused.
+- R: restart the round (also works while paused).
+
 ## Run it locally
 
 Clone the repository and open `index.html` in a browser. Everything is in the repository;
@@ -37,7 +43,7 @@ laptops' JSON files together and save the combined HTML. Use the same time windo
 - `index.html`: page and script loading.
 - `style.css`: page appearance.
 - `settings.js`: round duration, speeds, colours and dimensions.
-- `game.js`: scene, input, collisions, score and end-of-round behaviour.
+- `game.js`: scene, input, pause, collisions, score and end-of-round behaviour.
 - `vendor/phaser-3.90.0.min.js`: the pinned Phaser runtime, byte for byte the file published at
   `https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js`; `vendor/LICENSE.phaser.txt` is its MIT licence.
 
