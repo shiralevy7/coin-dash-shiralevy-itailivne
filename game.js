@@ -40,12 +40,9 @@ class CoinDash extends Phaser.Scene {
     this.placeCoin();
     this.drones = this.physics.add.group();
     for (let i = 0; i < c.droneCount; i++) {
-      const drone = this.add.rectangle(90 + i * 270, 100, 26, 26, c.colors.drone);
-      this.drones.add(drone);
-      drone.body.setCollideWorldBounds(true).setBounce(1, 1);
-      const angle = (35 + i * 105) * Math.PI / 180;
-      drone.body.setVelocity(Math.cos(angle) * c.droneSpeed, Math.sin(angle) * c.droneSpeed);
+      this.addDrone(90 + i * 270, 100, (35 + i * 105) * Math.PI / 180);
     }
+    this.droneLeft = c.droneEvery * 1000;
     this.physics.add.overlap(this.player, this.coin, () => {
       if (this.finished) return;
       this.addPoint();
@@ -75,14 +72,33 @@ class CoinDash extends Phaser.Scene {
     this.pauseText.setVisible(this.paused);
   }
 
-  // A random spot in the play area that is not directly underneath the player.
-  randomSpot() {
+  addDrone(x, y, angle) {
+    const c = COIN_DASH;
+    const drone = this.add.rectangle(x, y, 26, 26, c.colors.drone);
+    this.drones.add(drone);
+    drone.body.setCollideWorldBounds(true).setBounce(1, 1);
+    drone.body.setVelocity(Math.cos(angle) * c.droneSpeed, Math.sin(angle) * c.droneSpeed);
+  }
+
+  // Counts down in update(), so no drones are added while the game is paused or over.
+  updateDrones(delta) {
+    const c = COIN_DASH;
+    if (this.drones.getLength() >= c.droneMax) return;
+    this.droneLeft -= delta;
+    if (this.droneLeft > 0) return;
+    this.droneLeft += c.droneEvery * 1000;
+    const { x, y } = this.randomSpot(c.droneSpawnDistance);
+    this.addDrone(x, y, Phaser.Math.FloatBetween(0, Math.PI * 2));
+  }
+
+  // A random spot in the play area at least minDistance px from the player.
+  randomSpot(minDistance = 60) {
     const c = COIN_DASH;
     let x, y;
     do {
       x = Phaser.Math.Between(25, c.width - 25);
       y = Phaser.Math.Between(70, c.height - 25);
-    } while (Phaser.Math.Distance.Between(x, y, this.player.x, this.player.y) < 60);
+    } while (Phaser.Math.Distance.Between(x, y, this.player.x, this.player.y) < minDistance);
     return { x, y };
   }
 
@@ -233,6 +249,7 @@ class CoinDash extends Phaser.Scene {
   update(time, delta) {
     if (this.finished || this.paused) return;
     this.updatePowerUps(delta);
+    this.updateDrones(delta);
     const dx = Number(this.cursors.right.isDown || this.keys.D.isDown)
       - Number(this.cursors.left.isDown || this.keys.A.isDown);
     const dy = Number(this.cursors.down.isDown || this.keys.S.isDown)

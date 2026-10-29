@@ -33,6 +33,13 @@ grab them. Once picked up, a power-up lasts 5 seconds and blinks during its last
 
 Drones move at 150 px/s. Timings are in `settings.js` under `shield` and `sword`.
 
+## More drones over time
+
+The round starts with 3 drones, and one more joins every 8 seconds until there are 8. A new drone
+always appears well away from you, so it never catches you the moment it spawns. No drones are added
+while the game is paused or after the round ends, and R starts again with 3. Tuning is in `settings.js`
+(`droneCount`, `droneEvery`, `droneMax`, `droneSpawnDistance`).
+
 ## Run it locally
 
 Clone the repository and open `index.html` in a browser. Everything is in the repository;
@@ -64,8 +71,8 @@ laptops' JSON files together and save the combined HTML. Use the same time windo
 - `.gitignore`: keeps generated reports out of Git.
 - `index.html`: page and script loading.
 - `style.css`: page appearance.
-- `settings.js`: round duration, speeds, colours and dimensions.
-- `game.js`: scene, input, pause, collisions, score and end-of-round behaviour.
+- `settings.js`: round duration, speeds, colours, dimensions, power-up timings (shield, sword) and drone growth.
+- `game.js`: scene, input, pause, collisions, shield and sword power-ups, growing drone count, score, saved high score and end-of-round behaviour.
 - `vendor/phaser-3.90.0.min.js`: the pinned Phaser runtime, byte for byte the file published at
   `https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js`; `vendor/LICENSE.phaser.txt` is its MIT licence.
 

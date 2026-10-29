@@ -6,6 +6,10 @@ window.COIN_DASH = {
   playerSpeed: 240,
   droneSpeed: 150,
   droneCount: 3,
+  // Extra drones: one more every droneEvery seconds, up to droneMax, at least droneSpawnDistance px from the player.
+  droneEvery: 8,
+  droneMax: 8,
+  droneSpawnDistance: 220,
   // Power-ups appear every minDelay..maxDelay s, wait lifetime s, and last duration s once picked up.
   // Shield absorbs one hit; sword orbits the player (blade from inner to inner+length px) and kills drones.
   shield: { minDelay: 4, maxDelay: 6, lifetime: 6, duration: 5, graceMs: 1200, color: 0x7aa2ff },
