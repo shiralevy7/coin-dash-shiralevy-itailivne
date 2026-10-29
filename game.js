@@ -48,14 +48,11 @@ class CoinDash extends Phaser.Scene {
     }
     this.physics.add.overlap(this.player, this.coin, () => {
       if (this.finished) return;
-      this.score++;
-      if (this.score > this.highScore) {
-        this.highScore = this.score;
-        saveHighScore(this.highScore);
-      }
+      this.addPoint();
       this.placeCoin();
     });
     this.createShield();
+    this.createSword();
     this.physics.add.overlap(this.player, this.drones, () => this.hitDrone());
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys = this.input.keyboard.addKeys('W,A,S,D,R,P');
@@ -88,6 +85,14 @@ class CoinDash extends Phaser.Scene {
       y = Phaser.Math.Between(70, c.height - 25);
     } while (Phaser.Math.Distance.Between(x, y, this.player.x, this.player.y) < 60);
     return { x, y };
+  }
+
+  addPoint() {
+    this.score++;
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
+      saveHighScore(this.highScore);
+    }
   }
 
   placeCoin() {
@@ -155,6 +160,60 @@ class CoinDash extends Phaser.Scene {
     }
   }
 
+  createSword() {
+    const s = COIN_DASH.sword;
+    this.swordAngle = 0;
+    this.sword = this.add.rectangle(0, 0, s.length, 6, s.color).setDepth(2);
+  }
+
+  // Arcade bodies cannot rotate, so test points along the blade against each live drone.
+  updateSword(delta) {
+    const s = COIN_DASH.sword;
+    this.swordAngle += s.degPerSecond * delta / 1000;
+    const angle = Phaser.Math.DegToRad(this.swordAngle);
+    const mid = s.inner + s.length / 2;
+    this.sword.setPosition(this.player.x + Math.cos(angle) * mid, this.player.y + Math.sin(angle) * mid)
+      .setRotation(angle);
+    for (const drone of this.drones.getChildren()) {
+      if (!drone.body.enable) {
+        drone.respawnLeft -= delta;
+        if (drone.respawnLeft <= 0) this.respawnDrone(drone);
+        continue;
+      }
+      const bounds = drone.getBounds();
+      for (let r = s.inner; r <= s.inner + s.length; r += 5) {
+        if (bounds.contains(this.player.x + Math.cos(angle) * r, this.player.y + Math.sin(angle) * r)) {
+          this.killDrone(drone);
+          break;
+        }
+      }
+    }
+  }
+
+  killDrone(drone) {
+    drone.setVisible(false);
+    drone.body.enable = false;
+    drone.respawnLeft = COIN_DASH.sword.respawnMs;
+    this.addPoint();
+  }
+
+  // Bring a drone back on a random edge of the board, heading inward.
+  respawnDrone(drone) {
+    const c = COIN_DASH, top = 44 + 13, bottom = c.height - 13, left = 13, right = c.width - 13;
+    let x, y;
+    do {
+      const side = Phaser.Math.Between(0, 3);
+      x = side === 2 ? left : side === 3 ? right : Phaser.Math.Between(left, right);
+      y = side === 0 ? top : side === 1 ? bottom : Phaser.Math.Between(top, bottom);
+    } while (Phaser.Math.Distance.Between(x, y, this.player.x, this.player.y) < 150);
+    const angle = Phaser.Math.Angle.Between(x, y, c.width / 2, (c.height + 44) / 2)
+      + Phaser.Math.FloatBetween(-0.6, 0.6);
+    drone.setVisible(true);
+    drone.body.enable = true;
+    drone.body.reset(x, y);
+    drone.body.setVelocity(Math.cos(angle) * c.droneSpeed, Math.sin(angle) * c.droneSpeed);
+  }
+
   flashText(message) {
     const label = this.add.text(this.player.x, this.player.y - 30, message,
       { font: '16px monospace', color: '#ffffff' }).setOrigin(0.5).setDepth(5);
@@ -165,6 +224,7 @@ class CoinDash extends Phaser.Scene {
   update(time, delta) {
     if (this.finished || this.paused) return;
     this.updateShield(delta);
+    this.updateSword(delta);
     const dx = Number(this.cursors.right.isDown || this.keys.D.isDown)
       - Number(this.cursors.left.isDown || this.keys.A.isDown);
     const dy = Number(this.cursors.down.isDown || this.keys.S.isDown)

@@ -17,6 +17,12 @@ Every 4 to 6 seconds a blue star appears for 6 seconds. Touch it to get a shield
 around you) that absorbs one drone hit; after the hit you blink and are safe for a moment so you
 can escape. Timings are in `settings.js` under `shield`.
 
+## Sword
+
+A sword spins slowly around you (one turn every 3 seconds). Any drone it touches is destroyed and
+gives you 1 point; 2 seconds later the drone comes back from a random spot on the edge of the board.
+Settings are in `settings.js` under `sword`.
+
 ## Run it locally
 
 Clone the repository and open `index.html` in a browser. Everything is in the repository;
